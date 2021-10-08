@@ -11,48 +11,58 @@
 </head>
 
 <body>
-    <form action="api/viewset" method="post" target="_blank">
-        <!-- {%csrf_token%} -->
-        <label for="fname">title</label>
-        <input type="text" id="fname" name="fname"><br><br>
-        <label for="lname">description</label>
-        <input type="text" id="lname" name="lname"><br><br>
-        <input type="submit" value="Submit">
-    </form>
-    <button onclick="userAction()">ok</button>
-    <script>
+    
+    <button onclick="alertmessage()">ok</button>
+    <button onclick="csv()">csv</button>
+    <input type='file' id='csvfile' onchange="readFile(this)" />
+    <p id ='a'>missing vals</p>
+>
+    <img src="https://www.w3schools.com/html/img_chania.jpg" id ="img" alt="Flowers in Chania" width="460" height="345"/>
+   <script>
+        data = "ok";
+        function readFile(input) {
+            let file = input.files[0];
+            let reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = function () {
+                data = reader.result;
+                console.log(reader.result);
+            };
 
-        const userAction = async () => {
-            
-const csrftoken = Cookies.get('csrftoken');
-            const response = await fetch('api/viewset', {
+        }
+
+        function alertmessage() {
+            alert(data);
+        }
+
+    </script>
+
+
+    <script>
+        const csv = async () => {
+            const response = await fetch('csvfile/', {
                 method: 'POST',
-                body: {'csrfmiddlewaretoken': '{{ csrf_token }}','title':'title','description':'description'}, // string or object
+                body: data, // string or object
                 headers: {
-                    'X-CSRFToken': csrftoken,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'text/csv'
                 }
             });
+            // console.log(response.text());
             const myJson = await response.json(); //extract JSON from the http response
+            document.getElementById('a').innerHTML=myJson['sample_of_first_n_last_rows']
+            var b64Response = btoa(myJson['correlation']);
+            document.getElementById('img').src = 'data:image/png;base64,' + b64Response
+            console.log(b64Response)
+            //outputImg.src = 'data:image/png;base64,'+b64Response;
+            //alert(myJson['missing_vals'])
             // do something with myJson
+
         }
     </script>
-<button onclick="userAction1()">api</button>
-<script>
-const userAction1 = async () => {
-const response = await fetch('user/', {
-method: 'POST',
-body: JSON.stringify({'name1':'helloshubham','alias':'alias'}), // string or object
-headers: {
-'Content-Type': 'application/json'
-}
-});
-const myJson = await response.json(); //extract JSON from the http response
-alert(myJson['name'])
-// do something with myJson
 
-}
-</script>
+
+
+
 </body>
 
 

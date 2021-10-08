@@ -20,6 +20,8 @@ urlpatterns = [
     path('', include(router.urls)),
 	path('api-auth/', include('rest_framework.urls')),
     path('button/', views.test, name="test"),
-    path('user/',views.userapi)
+    path('user/',views.userapi),
+    path('csvfile/',views.csvfile)
+
 
 ]

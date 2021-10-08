@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<h2>Dataset statistics</h2>
+
+<table>
+    <tr>
+        {% for i in columns %}
+        <th>{{i}}</th>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for i in missing_values %}
+        <td>{{i}}</td>
+        {% endfor %}
+    </tr>
+
+    <tr>
+        {% for i in missing_value_percentage %}
+        <td>{{i}}</td>
+        {% endfor %}
+    </tr>
+
+    <tr>
+        {% for i in mean %}
+        <td>{{i}}</td>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for i in median %}
+        <td>{{i}}</td>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for i in mode %}
+        <td>{{i}}</td>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for i in memory_size %}
+        <td>{{i}}</td>
+        {% endfor %}
+    </tr>
+
+</table>
+
+</body>
+
+</html>
