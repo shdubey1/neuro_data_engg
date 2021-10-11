@@ -7,21 +7,21 @@ from .views import *
 # define the router
 router = routers.DefaultRouter()
 
-# define the router path and viewset to be used
-router.register(r'ndeapi', GeeksViewSet)
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="Ndehome"),
     path('test/', views.test),
-    path('api/viewset',views.viewset),
     path('dataset',views.dataset),
     path('previewDataset/', views.previewDataset, name="Ndehome"),
     path('', include(router.urls)),
 	path('api-auth/', include('rest_framework.urls')),
     path('button/', views.test, name="test"),
-    path('user/',views.userapi),
-    path('csvfile/',views.csvfile)
+    path('csvfile/',views.csvfile),
+    path('missing_values_api/',views.missingValuesAPI),
+    path('correlation_api/',views.correlationAPI),
+    path('missing_values_plotting_api/',views.missingValuesPlottingAPI),
+    path('sample_of_first_n_last_rows_api/',views.sampleOfFirstNLastRowsAPI),
+    path('graphs_api/',views.graphsAPI)
 
 
 ]
