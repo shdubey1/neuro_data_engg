@@ -1,13 +1,13 @@
 import plotly.express as px
 import pandas as pd
-import base64
+import json
 
 class MissingValuesPlottingFuncs:
     def __init__(self,df):
         self.df = df
     
-    def missingvaluesPlotting(self):
+    def missingValuesPlotting(self):
         fig = px.imshow(self.df)
-        missing_vals_plotting_img = fig.to_image(format='png')
-        return base64.encodebytes(missing_vals_plotting_img)
+        missing_vals_plotting_json = json.loads(fig.to_json())
+        return missing_vals_plotting_json
 

@@ -28,7 +28,7 @@ def correlationAPI(request):
     df = pd.read_csv(io.StringIO(urlData.decode('utf-8')))
     eda = EDAFuncs(df, request)
     correlation_html = eda.correlationHtml()
-    return HttpResponse(correlation_html)
+    return JsonResponse(correlation_html, safe=False)
 
 @csrf_exempt
 def missingValuesPlottingAPI(request):
@@ -36,7 +36,7 @@ def missingValuesPlottingAPI(request):
     df = pd.read_csv(io.StringIO(urlData.decode('utf-8')))
     eda = EDAFuncs(df, request)
     missing_values_plotting_html = eda.missingValuesPlottingHtml()
-    return HttpResponse(missing_values_plotting_html)
+    return JsonResponse(missing_values_plotting_html, safe=False)
 
 @csrf_exempt
 def sampleOfFirstNLastRowsAPI(request):
@@ -52,7 +52,7 @@ def graphsAPI(request):
     df = pd.read_csv(io.StringIO(urlData.decode('utf-8')))
     eda = EDAFuncs(df, request)
     graphs_html = eda.graphHtml()
-    return HttpResponse(graphs_html)
+    return JsonResponse(graphs_html, safe=False)
 
 @csrf_exempt
 def csvfile(request):

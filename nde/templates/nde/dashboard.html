@@ -19,6 +19,7 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.6.3.min.js"></script>
 
 
     <title>Neuro Data Engineering</title>
@@ -40,7 +41,8 @@
 					</span>
                 
                 <span class="col">
-                    <input class="form-control" type="file" />
+                    <!-- <input class="form-control" type="file" /> -->
+                    <input type='file' id='csvfile' onchange="readFile(this)" />
                 </span>
                 <span class="col">
                     <a href= "/previewDataset" class="btn btn-primary" type="button" >preview dataset </a>
@@ -49,520 +51,147 @@
             
         </form>
 		<h3>select from below options</h3>
-        <button type="button" class="btn btn-success">EDA</button>
+        <button type="button" class="btn">EDA</button>
 
-		<button type="button" class="btn btn-secondary">Data Preprocessing</button>
-		<button type="button" class="btn btn-success">Feature Engineering</button>
+		<button type="button" class="btn">Data Preprocessing</button>
+		<button type="button" class="btn">Feature Engineering</button>
 
     </div>
     
-    <a href="{% url 'test' %}" class="btn btn-danger">EDA</button>
 
 	<div class="section-items">
         <div class="row spacing">
             <ul class="nav nav-pills" role="tablist">
-                <li role="presentation" class="active"><a href="#missing_vals-dataset_missing_vals"
-                        aria-controls="missing_vals-dataset_missing_vals" role="tab" data-toggle="tab">Missing Values</a></li>
-                <li role="presentation"><a href="#missing_vals-warnings" aria-controls="missing_vals-warnings" role="tab"
+                <li role="presentation" onclick="missingValues()"><a href="#missing_values"
+                        aria-controls="missing_values" role="tab" data-toggle="tab">Missing Values</a></li>
+                <li role="presentation" onclick="correlation()"><a href="#correlation" aria-controls="correlation" role="tab"
                         data-toggle="tab">Correlation </a></li>
-                <li role="presentation"><a href="#correlation-reproduction" aria-controls="correlation"
+                <li role="presentation" onclick="missing_values_plotting()">
+                    <a href="#missing_values_plotting" aria-controls="missing_values_plotting"
                         role="tab" data-toggle="tab">Missing Values Plotting</a></li>
-				<li role="presentation"><a href="#missing_vals-sample-of-first-n-last-rows" aria-controls="missing_vals-sample-of-first-n-last-rows"
+				<li role="presentation" onclick="sampleOfFirstNLastRows()"><a href="#sample_of_first_n_last_rows" aria-controls="sample_of_first_n_last_rows"
                     role="tab" data-toggle="tab">Sample of first and last rows</a></li>
-                <li role="presentation"><a href="#missing_vals-graphs" aria-controls="missing_vals-graphs"
+                <li role="presentation" onclick="graphs()"><a href="#graphs" aria-controls="graphs"
                     role="tab" data-toggle="tab">Graphs</a></li>
             </ul>
             <div class="tab-content" style="padding-top: 10px;">
-                <div role="tabpanel" class="tab-pane col-sm-12 active" id="missing_vals-dataset_missing_vals">
-                    <div class="col-sm-6">
-                        <p class="h4">Dataset statistics</p>
-                        <table class="table table-condensed stats">
-                            <tbody>
-                                <tr>
-                                    <th>Number of variables</th>
-                                    <td>15</td>
-                                </tr>
-                                <tr>
-                                    <th>Number of observations</th>
-                                    <td>457</td>
-                                </tr>
-                                <tr>
-                                    <th>Missing cells</th>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <th>Missing cells (%)</th>
-                                    <td>0.0%</td>
-                                </tr>
-                                <tr>
-                                    <th>Duplicate rows</th>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <th>Duplicate rows (%)</th>
-                                    <td>0.0%</td>
-                                </tr>
-                                <tr>
-                                    <th>Total size in memory</th>
-                                    <td>53.7 KiB</td>
-                                </tr>
-                                <tr>
-                                    <th>Average record size in memory</th>
-                                    <td>120.3 B</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-sm-6">
-                        <p class="h4">Variable types</p>
-                        <table class="table table-condensed stats">
-                            <tbody>
-                                <tr>
-                                    <th>Numeric</th>
-                                    <td>14</td>
-                                </tr>
-                                <tr>
-                                    <th>Categorical</th>
-                                    <td>1</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div role="tabpanel" class="tab-pane col-sm-12" id="missing_values"> 
+                
                 </div>
-                <div role="tabpanel" class="tab-pane col-sm-12" id="missing_vals-warnings">
-                    <p class="h4">Warnings</p>
-                    <table class="table table-condensed list-warnings">
-                        <tbody>
-                            <tr style="border-top:0">
-                                <td><a class="anchor" href="#pp_var_2239328475187968169"><code>TotalSteps</code></a> is
-                                    highly correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, TrackerDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, VeryActiveMinutes, LightlyActiveMinutes, Calories">7
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_8012850386979599683"><code>TotalDistance</code></a>
-                                    is highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TrackerDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, VeryActiveMinutes, LightlyActiveMinutes, Calories">7
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_2737168218784904989"><code>TrackerDistance</code></a> is highly
-                                    correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, VeryActiveMinutes, LightlyActiveMinutes, Calories">7
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-5046822020799290067"><code>VeryActiveDistance</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, VeryActiveMinutes">3 other
-                                        fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-4618385674473317236"><code>ModeratelyActiveDistance</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance">2 other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-3848447881904970098"><code>LightActiveDistance</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, LightlyActiveMinutes">3 other
-                                        fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_2663202780024272698"><code>VeryActiveMinutes</code></a> is highly
-                                    correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, VeryActiveDistance, Calories">4
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-4651389336597605991"><code>LightlyActiveMinutes</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, LightActiveDistance">3 other
-                                        fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_9007280336033383863"><code>Calories</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, VeryActiveMinutes">3 other
-                                        fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_2239328475187968169"><code>TotalSteps</code></a> is
-                                    highly correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, TrackerDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes, Calories">8
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_8012850386979599683"><code>TotalDistance</code></a>
-                                    is highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TrackerDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes, Calories">8
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_2737168218784904989"><code>TrackerDistance</code></a> is highly
-                                    correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes, Calories">8
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-5046822020799290067"><code>VeryActiveDistance</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, ModeratelyActiveDistance, VeryActiveMinutes, FairlyActiveMinutes">5
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-4618385674473317236"><code>ModeratelyActiveDistance</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, VeryActiveDistance, LightActiveDistance, VeryActiveMinutes, FairlyActiveMinutes">6
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-3848447881904970098"><code>LightActiveDistance</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, ModeratelyActiveDistance, FairlyActiveMinutes, LightlyActiveMinutes">5
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_2663202780024272698"><code>VeryActiveMinutes</code></a> is highly
-                                    correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, VeryActiveDistance, ModeratelyActiveDistance, FairlyActiveMinutes">5
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-8370202756679853378"><code>FairlyActiveMinutes</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, VeryActiveMinutes">6
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-4651389336597605991"><code>LightlyActiveMinutes</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, LightActiveDistance">3 other
-                                        fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_9007280336033383863"><code>Calories</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance">2 other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_2239328475187968169"><code>TotalSteps</code></a> is
-                                    highly correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, TrackerDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes">7
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_8012850386979599683"><code>TotalDistance</code></a>
-                                    is highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TrackerDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes">7
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_2737168218784904989"><code>TrackerDistance</code></a> is highly
-                                    correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes">7
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-5046822020799290067"><code>VeryActiveDistance</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, ModeratelyActiveDistance, VeryActiveMinutes, FairlyActiveMinutes">5
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-4618385674473317236"><code>ModeratelyActiveDistance</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, VeryActiveDistance, VeryActiveMinutes, FairlyActiveMinutes">5
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-3848447881904970098"><code>LightActiveDistance</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, LightlyActiveMinutes">3 other
-                                        fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_2663202780024272698"><code>VeryActiveMinutes</code></a> is highly
-                                    correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, VeryActiveDistance, ModeratelyActiveDistance, FairlyActiveMinutes">5
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-8370202756679853378"><code>FairlyActiveMinutes</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, VeryActiveDistance, ModeratelyActiveDistance, VeryActiveMinutes">5
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-4651389336597605991"><code>LightlyActiveMinutes</code></a> is
-                                    highly correlated with <code>TotalSteps</code> and <abbr
-                                        title="TotalSteps, TotalDistance, TrackerDistance, LightActiveDistance">3 other
-                                        fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_8012850386979599683"><code>TotalDistance</code></a>
-                                    is highly correlated with <code>SedentaryMinutes</code> and <abbr
-                                        title="SedentaryMinutes, ModeratelyActiveDistance, LightActiveDistance, Id, LightlyActiveMinutes, TrackerDistance, TotalSteps, VeryActiveDistance, Calories, VeryActiveMinutes">9
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-8676299407157064183"><code>SedentaryMinutes</code></a> is highly
-                                    correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, LightActiveDistance, LightlyActiveMinutes, TrackerDistance, TotalSteps, Calories">5
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-4618385674473317236"><code>ModeratelyActiveDistance</code></a> is
-                                    highly correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, TrackerDistance, TotalSteps, FairlyActiveMinutes">3 other
-                                        fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-3848447881904970098"><code>LightActiveDistance</code></a> is
-                                    highly correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, SedentaryMinutes, LightlyActiveMinutes, TrackerDistance, TotalSteps, VeryActiveDistance">5
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_1599152631051066068"><code>SedentaryActiveDistance</code></a> is
-                                    highly correlated with <code>LoggedActivitiesDistance</code></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_-9077651484581292456"><code>Id</code></a> is highly
-                                    correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, LightlyActiveMinutes, TrackerDistance, TotalSteps, VeryActiveDistance, Calories, VeryActiveMinutes">6
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-4651389336597605991"><code>LightlyActiveMinutes</code></a> is
-                                    highly correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, SedentaryMinutes, LightActiveDistance, Id, TrackerDistance, LoggedActivitiesDistance, TotalSteps, Calories">7
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_2737168218784904989"><code>TrackerDistance</code></a> is highly
-                                    correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, SedentaryMinutes, ModeratelyActiveDistance, LightActiveDistance, Id, LightlyActiveMinutes, TotalSteps, VeryActiveDistance, Calories, VeryActiveMinutes">9
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_7481824786847495648"><code>LoggedActivitiesDistance</code></a> is
-                                    highly correlated with <code>SedentaryActiveDistance</code> and <abbr
-                                        title="SedentaryActiveDistance, LightlyActiveMinutes">1 other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_7354362995714543910"><code>ActivityDate</code></a>
-                                    is highly correlated with <code>Calories</code></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_2239328475187968169"><code>TotalSteps</code></a> is
-                                    highly correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, SedentaryMinutes, ModeratelyActiveDistance, LightActiveDistance, Id, LightlyActiveMinutes, TrackerDistance, VeryActiveDistance, Calories, VeryActiveMinutes">9
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-5046822020799290067"><code>VeryActiveDistance</code></a> is
-                                    highly correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, LightActiveDistance, Id, TrackerDistance, TotalSteps, VeryActiveMinutes">5
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_9007280336033383863"><code>Calories</code></a> is
-                                    highly correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, SedentaryMinutes, Id, LightlyActiveMinutes, TrackerDistance, ActivityDate, TotalSteps">6
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_2663202780024272698"><code>VeryActiveMinutes</code></a> is highly
-                                    correlated with <code>TotalDistance</code> and <abbr
-                                        title="TotalDistance, Id, TrackerDistance, TotalSteps, VeryActiveDistance">4
-                                        other fields</abbr></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-8370202756679853378"><code>FairlyActiveMinutes</code></a> is
-                                    highly correlated with <code>ModeratelyActiveDistance</code></td>
-                                <td><span class="label label-default">High correlation</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_2239328475187968169"><code>TotalSteps</code></a> has
-                                    61 (13.3%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_8012850386979599683"><code>TotalDistance</code></a>
-                                    has 63 (13.8%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_2737168218784904989"><code>TrackerDistance</code></a> has 66
-                                    (14.4%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_7481824786847495648"><code>LoggedActivitiesDistance</code></a> has
-                                    433 (94.7%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-5046822020799290067"><code>VeryActiveDistance</code></a> has 245
-                                    (53.6%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-4618385674473317236"><code>ModeratelyActiveDistance</code></a>
-                                    has 228 (49.9%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-3848447881904970098"><code>LightActiveDistance</code></a> has 74
-                                    (16.2%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_1599152631051066068"><code>SedentaryActiveDistance</code></a> has
-                                    419 (91.7%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_2663202780024272698"><code>VeryActiveMinutes</code></a> has 241
-                                    (52.7%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-8370202756679853378"><code>FairlyActiveMinutes</code></a> has 227
-                                    (49.7%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor"
-                                        href="#pp_var_-4651389336597605991"><code>LightlyActiveMinutes</code></a> has 72
-                                    (15.8%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                            <tr>
-                                <td><a class="anchor" href="#pp_var_9007280336033383863"><code>Calories</code></a> has 5
-                                    (1.1%) zeros </td>
-                                <td><span class="label label-info">Zeros</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                <div role="tabpanel" class="tab-pane col-sm-12" id="correlation"> 
+                    <div id="plot"></div>
                 </div>
-                <div role="tabpanel" class="tab-pane col-sm-12" id="missing_vals-reproduction">
-                    <div class="col-sm-12">
-                        <p class="h4">Reproduction</p>
-                        <table class="table table-condensed stats">
-                            <tbody>
-                                <tr>
-                                    <th>Analysis started</th>
-                                    <td>2021-08-27 06:18:17.015868</td>
-                                </tr>
-                                <tr>
-                                    <th>Analysis finished</th>
-                                    <td>2021-08-27 06:19:10.391126</td>
-                                </tr>
-                                <tr>
-                                    <th>Duration</th>
-                                    <td>53.38 seconds</td>
-                                </tr>
-                                <tr>
-                                    <th>Software version</th>
-                                    <td><a href="https://github.com/pandas-profiling/pandas-profiling">pandas-profiling
-                                            v3.0.0</a></td>
-                                </tr>
-                                <tr>
-                                    <th>Download configuration</th>
-                                    <td><a download="config.json"
-                                            href="data:text/plain;charset=utf-8,%7B%22title%22%3A%20%22Pandas%20Profiling%20Report%22%2C%20%22dataset%22%3A%20%7B%22description%22%3A%20%22%22%2C%20%22creator%22%3A%20%22%22%2C%20%22author%22%3A%20%22%22%2C%20%22copyright_holder%22%3A%20%22%22%2C%20%22copyright_year%22%3A%20%22%22%2C%20%22url%22%3A%20%22%22%7D%2C%20%22variables%22%3A%20%7B%22descriptions%22%3A%20%7B%7D%7D%2C%20%22infer_dtypes%22%3A%20true%2C%20%22show_variable_description%22%3A%20true%2C%20%22pool_size%22%3A%200%2C%20%22progress_bar%22%3A%20true%2C%20%22vars%22%3A%20%7B%22num%22%3A%20%7B%22quantiles%22%3A%20%5B0.05%2C%200.25%2C%200.5%2C%200.75%2C%200.95%5D%2C%20%22skewness_threshold%22%3A%2020%2C%20%22low_categorical_threshold%22%3A%205%2C%20%22chi_squared_threshold%22%3A%200.999%7D%2C%20%22cat%22%3A%20%7B%22length%22%3A%20true%2C%20%22characters%22%3A%20true%2C%20%22words%22%3A%20true%2C%20%22cardinality_threshold%22%3A%2050%2C%20%22n_obs%22%3A%205%2C%20%22chi_squared_threshold%22%3A%200.999%2C%20%22coerce_str_to_date%22%3A%20false%2C%20%22redact%22%3A%20false%2C%20%22histogram_largest%22%3A%2050%7D%2C%20%22image%22%3A%20%7B%22active%22%3A%20false%2C%20%22exif%22%3A%20true%2C%20%22hash%22%3A%20true%7D%2C%20%22bool%22%3A%20%7B%22n_obs%22%3A%203%2C%20%22mappings%22%3A%20%7B%22t%22%3A%20true%2C%20%22f%22%3A%20false%2C%20%22yes%22%3A%20true%2C%20%22no%22%3A%20false%2C%20%22y%22%3A%20true%2C%20%22n%22%3A%20false%2C%20%22true%22%3A%20true%2C%20%22false%22%3A%20false%7D%7D%2C%20%22path%22%3A%20%7B%22active%22%3A%20false%7D%2C%20%22file%22%3A%20%7B%22active%22%3A%20false%7D%2C%20%22url%22%3A%20%7B%22active%22%3A%20false%7D%7D%2C%20%22sort%22%3A%20null%2C%20%22missing_diagrams%22%3A%20%7B%22bar%22%3A%20true%2C%20%22matrix%22%3A%20true%2C%20%22dendrogram%22%3A%20true%2C%20%22heatmap%22%3A%20true%7D%2C%20%22correlations%22%3A%20%7B%22spearman%22%3A%20%7B%22key%22%3A%20%22spearman%22%2C%20%22calculate%22%3A%20true%2C%20%22warn_high_correlations%22%3A%2010%2C%20%22threshold%22%3A%200.5%7D%2C%20%22pearson%22%3A%20%7B%22key%22%3A%20%22pearson%22%2C%20%22calculate%22%3A%20true%2C%20%22warn_high_correlations%22%3A%2010%2C%20%22threshold%22%3A%200.5%7D%2C%20%22kendall%22%3A%20%7B%22key%22%3A%20%22kendall%22%2C%20%22calculate%22%3A%20true%2C%20%22warn_high_correlations%22%3A%2010%2C%20%22threshold%22%3A%200.5%7D%2C%20%22cramers%22%3A%20%7B%22key%22%3A%20%22cramers%22%2C%20%22calculate%22%3A%20true%2C%20%22warn_high_correlations%22%3A%2010%2C%20%22threshold%22%3A%200.5%7D%2C%20%22phi_k%22%3A%20%7B%22key%22%3A%20%22phi_k%22%2C%20%22calculate%22%3A%20true%2C%20%22warn_high_correlations%22%3A%2010%2C%20%22threshold%22%3A%200.5%7D%7D%2C%20%22interactions%22%3A%20%7B%22continuous%22%3A%20true%2C%20%22targets%22%3A%20%5B%5D%7D%2C%20%22categorical_maximum_correlation_distinct%22%3A%20100%2C%20%22memory_deep%22%3A%20false%2C%20%22plot%22%3A%20%7B%22missing%22%3A%20%7B%22force_labels%22%3A%20true%2C%20%22cmap%22%3A%20%22RdBu%22%7D%2C%20%22image_format%22%3A%20%22svg%22%2C%20%22correlation%22%3A%20%7B%22cmap%22%3A%20%22RdBu%22%2C%20%22bad%22%3A%20%22%23000000%22%7D%2C%20%22dpi%22%3A%20800%2C%20%22histogram%22%3A%20%7B%22bins%22%3A%2050%2C%20%22max_bins%22%3A%20250%2C%20%22x_axis_labels%22%3A%20true%7D%2C%20%22scatter_threshold%22%3A%201000%2C%20%22pie%22%3A%20%7B%22max_unique%22%3A%2010%7D%7D%2C%20%22duplicates%22%3A%20%7B%22head%22%3A%2010%2C%20%22key%22%3A%20%22%23%20duplicates%22%7D%2C%20%22samples%22%3A%20%7B%22head%22%3A%2010%2C%20%22tail%22%3A%2010%2C%20%22random%22%3A%200%7D%2C%20%22reject_variables%22%3A%20true%2C%20%22n_obs_unique%22%3A%2010%2C%20%22n_freq_table_max%22%3A%2010%2C%20%22n_extreme_obs%22%3A%2010%2C%20%22report%22%3A%20%7B%22precision%22%3A%2010%7D%2C%20%22html%22%3A%20%7B%22style%22%3A%20%7B%22primary_color%22%3A%20%22%23337ab7%22%2C%20%22logo%22%3A%20%22%22%2C%20%22theme%22%3A%20null%7D%2C%20%22navbar_show%22%3A%20true%2C%20%22minify_html%22%3A%20true%2C%20%22use_local_assets%22%3A%20true%2C%20%22inline%22%3A%20true%2C%20%22assets_prefix%22%3A%20null%2C%20%22assets_path%22%3A%20null%2C%20%22full_width%22%3A%20false%7D%2C%20%22notebook%22%3A%20%7B%22iframe%22%3A%20%7B%22height%22%3A%20%22800px%22%2C%20%22width%22%3A%20%22100%25%22%2C%20%22attribute%22%3A%20%22srcdoc%22%7D%7D%7D">config.json</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+
+                <div role="tabpanel" class="tab-pane col-sm-12" id="missing_values_plotting"> 
+            
+                    <div id="ploting"></div>
                 </div>
+
+                <div role="tabpanel" class="tab-pane col-sm-12" id="sample_of_first_n_last_rows"> 
+                    
+                </div>
+
+                <div role="tabpanel" class="tab-pane col-sm-12" id="graphs"> 
+                    <div id="plot"></div>
+                </div>
+               
             </div>
         </div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+
+    <script>
+        function plot(json_data){
+            Plotly.newPlot('plot', json_data);
+        }
+        const graphs = async () => {
+            const response = await fetch('graphs_api/', {
+                method: 'POST',
+                body: data, // string or object
+                headers: {
+                    'Content-Type': 'text/csv'
+                }
+            });
+            
+            const json = await response.json(); //extract JSON from the http response
+            plot(json);
+
+        }
+        const correlation = async () => {
+            const response = await fetch('correlation_api/', {
+                method: 'POST',
+                body: data, // string or object
+                headers: {
+                    'Content-Type': 'text/csv'
+                }
+            });
+            
+            const json = await response.json(); //extract JSON from the http response
+            plot(json);
+
+        }
+
+        const missing_values_plotting = async () => {
+            const response = await fetch('missing_values_plotting_api/', {
+                method: 'POST',
+                body: data, // string or object
+                headers: {
+                    'Content-Type': 'text/csv'
+                }
+            });
+            
+            const json = await response.json(); //extract JSON from the http response
+            // plot(json);
+            Plotly.newPlot('ploting', json);
+        }
+
+        const missingValues = async () => {
+            const response = await fetch('missing_values_api/', {
+                method: 'POST',
+                body: data, // string or object
+                headers: {
+                    'Content-Type': 'text/html'
+                }
+            });
+            response.text().then(function (result) {
+                document.getElementById('missing_values').innerHTML = result;
+                
+            });
+        }
+
+        const sampleOfFirstNLastRows = async () => {
+            const response = await fetch('sample_of_first_n_last_rows_api/', {
+                method: 'POST',
+                body: data, // string or object
+                headers: {
+                    'Content-Type': 'text/html'
+                }
+            });
+            response.text().then(function (result) {
+                document.getElementById('sample_of_first_n_last_rows').innerHTML = result;
+                
+            });
+        }
+    </script>
+
+
+<script>
+    data = "Data is not available";
+    function readFile(input) {
+        let file = input.files[0];
+        let reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function () {
+            data = reader.result;
+            //console.log(reader.result);
+        };
+
+    }
+
+
+</script>
 
 </body>
 

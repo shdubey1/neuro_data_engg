@@ -45,7 +45,7 @@ class EDAFuncs:
 
     def missingValuesPlottingHtml(self):
         missing_vals_plotting_obj = MissingValuesPlottingFuncs(self.df)
-        missing_vals_plotting_html = missing_vals_plotting_obj.missingvaluesPlotting()
+        missing_vals_plotting_html = missing_vals_plotting_obj.missingValuesPlotting()
         return missing_vals_plotting_html  
 
     def sampleOfFstnLstRowHtml(self):
