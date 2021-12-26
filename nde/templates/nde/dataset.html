@@ -12,17 +12,41 @@
 
 <body>
 
-    <button onclick="alertmessage()">ok</button>
-    <button onclick="csv()">csv</button>
+
     <input type='file' id='csvfile' onchange="readFile(this)" />
-    <p id='a'>missing vals</p>
-    <button onclick="missingValues()">Missing Values</button>
-    <button onclick="correlation()">Correlation</button>
-    <button onclick="missingValuesPlotting()">Missing Values Plotting</button>
-    <button onclick="sampleOfFirstNLastRows()">Sample Of First & Last Rows</button>
-    <button onclick="graphs()">Graphs</button>
-    <img src="https://www.w3schools.com/html/img_chania.jpg" id="img" alt="Flowers in Chania" width="460"
-        height="345" />
+    <div class="container">
+
+        <!-- Nav pills -->
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link " data-toggle="pill" href="#imbalanced">Imbalanced</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#categorical">Categorical</a>
+            </li>
+
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div id="imbalanced" class="container tab-pane"><br>
+
+                <button onclick="upSampling()">Up Sampling</button>
+                <button onclick="downSampling()">Down Sampling</button>
+
+            </div>
+
+            <div id="categorical" class="container tab-pane"><br>
+
+                <button>One Hot Encoding</button>
+                <button>Target Encoding </button>
+
+            </div>
+
+        </div>
+    </div>
+<div id='data_show'></div>
+
     <script>
         data = "ok";
         function readFile(input) {
@@ -66,11 +90,11 @@
 
     </script>
 
-    <!-- Missing Values -->
+    <!-- Up Sampling -->
 
     <script>
-        const missingValues = async () => {
-            const response = await fetch('missing_values_api/', {
+        const upSampling = async () => {
+            const response = await fetch('up_sampling_api/', {
                 method: 'POST',
                 body: data, // string or object
                 headers: {
@@ -78,9 +102,7 @@
                 }
             });
             response.text().then(function (result) {
-                document.getElementById('a').innerHTML = result;
-                console.log('text call');
-                console.log(result);
+                document.getElementById('data_show').innerHTML = result;
             });
         }
     </script>
@@ -96,68 +118,13 @@
                     'Content-Type': 'image/png'
                 }
             });
-            
+
             response.text().then(function (result) {
-                console.log('data:image/png;base64,'+result)
-                document.getElementById('img').src = 'data:image/png;base64,'+result;
-                
-               });
+                console.log('data:image/png;base64,' + result)
+                document.getElementById('img').src = 'data:image/png;base64,' + result;
 
-        }
-    </script>
-
-    <!-- Missing Values Plotting -->
-
-    <script>
-        const missingValuesPlotting = async () => {
-            const response = await fetch('missing_values_plotting_api/', {
-                method: 'POST',
-                body: data, // string or object
-                headers: {
-                    'Content-Type': 'image/png'
-                }
             });
-            response.text().then(function (result) {
-                document.getElementById('img').src = 'data:image/png;base64,'+result;
-                
-            });
-        }
-    </script>
 
-    <!-- Sample Of First And Last Rows -->
-
-    <script>
-        const sampleOfFirstNLastRows = async () => {
-            const response = await fetch('sample_of_first_n_last_rows_api/', {
-                method: 'POST',
-                body: data, // string or object
-                headers: {
-                    'Content-Type': 'text/html'
-                }
-            });
-            response.text().then(function (result) {
-                document.getElementById('a').innerHTML = result;
-                console.log('text call');
-                console.log(result);
-            });
-        }
-    </script>
-
-
-    <!-- Graphs -->
-
-    <script>
-        const graphs = async () => {
-            const response = await fetch('graphs_api/', {
-                method: 'POST',
-                body: data, // string or object
-                headers: {
-                    'Content-Type': 'image/png'
-                }
-            });
-            response.text().then(function (result) {
-                document.getElementById('img').src = 'data:image/png;base64,'+result;
-            });
         }
     </script>
 

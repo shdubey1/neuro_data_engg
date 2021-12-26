@@ -12,7 +12,26 @@ from rest_framework.decorators import api_view
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
+from imblearn.over_sampling import RandomOverSampler
 import io
+
+@csrf_exempt
+def upSamplingAPI(request):
+    urlData = request.body
+    df = pd.read_csv(io.StringIO(urlData.decode('utf-8')))
+    columns = df.columns.tolist()
+    # Filter the columns to remove data we do not want 
+    columns = [c for c in columns if c not in ["Class"]]
+    # Store the variable we are predicting 
+    target = "Class"
+
+    X = df[columns]
+    Y = df[target]
+    rus = RandomOverSampler(random_state=0)
+    X_resampled, y_resampled = rus.fit_resample(X, Y)
+    print(len(X_resampled),len(y_resampled))
+
+    return HttpResponse(y_resampled)
 
 @csrf_exempt
 def missingValuesAPI(request):

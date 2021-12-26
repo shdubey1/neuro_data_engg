@@ -93,7 +93,7 @@
                 </div>
 
                 <div role="tabpanel" class="tab-pane col-sm-12" id="graphs"> 
-                    <div id="plot"></div>
+                    <div id="graph"></div>
                 </div>
                
             </div>
@@ -116,7 +116,7 @@
             });
             
             const json = await response.json(); //extract JSON from the http response
-            plot(json);
+            Plotly.newPlot('graph', json);
 
         }
         const correlation = async () => {

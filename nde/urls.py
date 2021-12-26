@@ -21,7 +21,10 @@ urlpatterns = [
     path('correlation_api/',views.correlationAPI),
     path('missing_values_plotting_api/',views.missingValuesPlottingAPI),
     path('sample_of_first_n_last_rows_api/',views.sampleOfFirstNLastRowsAPI),
-    path('graphs_api/',views.graphsAPI)
+    path('graphs_api/',views.graphsAPI),
+
+
+    path('up_sampling_api/',views.upSamplingAPI)
 
 
 ]
